@@ -176,7 +176,8 @@ mraa_result_t
 mraa_intel_edison_gpio_dir_post(mraa_gpio_context dev, mraa_gpio_dir_t dir)
 {
     if (dev->phy_pin >= 0) {
-        return mraa_gpio_write(tristate, 1);
+        mraa_gpio_write(tristate, 1);
+        return MRAA_SUCCESS;
     }
     return MRAA_SUCCESS;
 }
@@ -276,7 +277,7 @@ mraa_intel_edison_misc_spi()
     int i;
     mraa_result_t ret;
 
-    MRAA_RETURN_FOR_ERROR(mraa_gpio_write(tristate, 0));
+    mraa_gpio_write(tristate, 0);
 
     for (i = 0; i < pin_num; i++) {
         mraa_gpio_context io = mraa_gpio_init_raw(gpio_pin_list[i]);
@@ -298,7 +299,7 @@ mraa_intel_edison_misc_spi()
     MRAA_RETURN_FOR_ERROR(mraa_intel_edison_pinmode_change(115, 1));
     MRAA_RETURN_FOR_ERROR(mraa_intel_edison_pinmode_change(114, 1));
     MRAA_RETURN_FOR_ERROR(mraa_intel_edison_pinmode_change(109, 1));
-    MRAA_RETURN_FOR_ERROR(mraa_gpio_write(tristate, 1));
+    mraa_gpio_write(tristate, 1);
 
     return MRAA_SUCCESS;
 }
@@ -362,7 +363,8 @@ mraa_intel_edison_aio_init_pre(unsigned int aio)
 mraa_result_t
 mraa_intel_edison_aio_init_post(mraa_aio_context dev)
 {
-    return mraa_gpio_write(tristate, 1);
+    mraa_gpio_write(tristate, 1);
+    return MRAA_SUCCESS;
 }
 
 mraa_result_t
@@ -412,7 +414,8 @@ mraa_intel_edison_pwm_init_pre(int pin)
 mraa_result_t
 mraa_intel_edison_pwm_init_post(mraa_pwm_context pwm)
 {
-    return mraa_gpio_write(tristate, 1);
+    mraa_gpio_write(tristate, 1);
+    return MRAA_SUCCESS;
 }
 
 mraa_result_t
@@ -466,7 +469,8 @@ mraa_intel_edison_spi_init_pre(int bus)
 mraa_result_t
 mraa_intel_edison_spi_init_post(mraa_spi_context spi)
 {
-    return mraa_gpio_write(tristate, 1);
+    mraa_gpio_write(tristate, 1);
+    return MRAA_SUCCESS;
 }
 
 mraa_result_t
@@ -1161,6 +1165,7 @@ mraa_intel_edison_fab_c()
     b->platform_name = PLATFORM_NAME;
     // This seciton will also check if the arduino board is there
     tristate = mraa_gpio_init_raw(214);
+    /*
     if (tristate == NULL) {
         syslog(LOG_INFO, "edison: Failed to initialise Arduino board TriState,\
                 assuming Intel Edison Miniboard\n");
@@ -1169,6 +1174,7 @@ mraa_intel_edison_fab_c()
         }
         return b;
     }
+    */
     // Now Assuming the edison is attached to the Arduino board.
     b->phy_pin_count = 20;
     b->gpio_count = 14;
